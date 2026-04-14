@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
-import { computed, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 
 interface Category {
     id: number;
@@ -25,19 +25,29 @@ interface Product {
 const props = defineProps<{
     categories: Category[];
     product?: Product;
+    from_category?: number | null;
 }>();
 
 const isEdit = computed(() => !!props.product);
 
 const form = useForm({
-    category_id:  props.product?.category_id  ?? '',
-    brand_id:     props.product?.brand_id     ?? '',
-    size_id:      props.product?.size_id      ?? '',
-    age_group_id: props.product?.age_group_id ?? '',
-    name:         props.product?.name         ?? '',
-    price:        props.product?.price        ?? '',
-    image_url:    props.product?.image_url    ?? '',
+    category_id:   props.product?.category_id  ?? '',
+    brand_id:      props.product?.brand_id     ?? '',
+    size_id:       props.product?.size_id      ?? '',
+    age_group_id:  props.product?.age_group_id ?? '',
+    name:          props.product?.name         ?? '',
+    price:         props.product?.price        ?? '',
+    image:         null as File | null,
+    from_category: props.from_category ?? null,
 });
+
+const preview = ref<string | null>(props.product?.image_url ?? null);
+
+function onFileChange(e: Event) {
+    const file = (e.target as HTMLInputElement).files?.[0] ?? null;
+    form.image   = file;
+    preview.value = file ? URL.createObjectURL(file) : (props.product?.image_url ?? null);
+}
 
 const selectedCategory = computed<Category | undefined>(
     () => props.categories.find((c) => c.id === Number(form.category_id)),
@@ -51,7 +61,8 @@ watch(() => form.category_id, () => {
 
 function submit() {
     if (isEdit.value && props.product) {
-        form.put(route('admin.products.update', props.product.id));
+        form.transform((data) => ({ ...data, _method: 'PUT' }))
+            .post(route('admin.products.update', props.product.id));
     } else {
         form.post(route('admin.products.store'));
     }
@@ -62,7 +73,7 @@ function submit() {
     <AppLayout>
         <Head :title="isEdit ? 'Редактировать товар' : 'Новый товар'" />
 
-        <div class="p-6">
+        <div class="px-3 py-6 sm:px-6">
             <h1 class="mb-6 text-2xl font-bold text-gray-800">
                 {{ isEdit ? 'Редактировать товар' : 'Новый товар' }}
             </h1>
@@ -137,18 +148,19 @@ function submit() {
                     <p v-if="form.errors.price" class="mt-1 text-xs text-red-500">{{ form.errors.price }}</p>
                 </div>
 
-                <!-- Image URL -->
+                <!-- Image upload -->
                 <div class="mb-6">
-                    <label class="mb-1 block text-sm font-medium text-gray-700">URL изображения</label>
-                    <input
-                        v-model="form.image_url"
-                        type="text"
-                        placeholder="https://..."
-                        class="w-full rounded-lg border px-3 py-2 text-sm focus:border-pink-400 focus:outline-none"
-                    />
-                    <div v-if="form.image_url" class="mt-2">
-                        <img :src="form.image_url" class="h-24 w-24 rounded-lg object-cover" />
+                    <label class="mb-1 block text-sm font-medium text-gray-700">Изображение</label>
+                    <div
+                        class="relative flex cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-200 p-6 hover:border-pink-400 transition"
+                        @click="($refs.fileInput as HTMLInputElement).click()"
+                    >
+                        <img v-if="preview" :src="preview" class="mb-3 h-32 w-32 rounded-lg object-cover" />
+                        <span class="text-sm text-gray-400">{{ form.image ? form.image.name : 'Нажмите для выбора файла' }}</span>
+                        <span class="mt-1 text-xs text-gray-300">PNG, JPG до 4MB</span>
+                        <input ref="fileInput" type="file" accept="image/*" class="hidden" @change="onFileChange" />
                     </div>
+                    <p v-if="form.errors.image" class="mt-1 text-xs text-red-500">{{ form.errors.image }}</p>
                 </div>
 
                 <div class="flex gap-3">
@@ -159,7 +171,10 @@ function submit() {
                     >
                         {{ isEdit ? 'Сохранить' : 'Создать' }}
                     </button>
-                    <a :href="route('admin.products.index')" class="rounded-lg border px-6 py-2 text-sm text-gray-600 hover:bg-gray-50">
+                    <a
+                        :href="from_category ? route('admin.categories.show', from_category) : route('admin.products.index')"
+                        class="rounded-lg border px-6 py-2 text-sm text-gray-600 hover:bg-gray-50"
+                    >
                         Отмена
                     </a>
                 </div>

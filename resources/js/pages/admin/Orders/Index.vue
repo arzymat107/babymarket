@@ -2,6 +2,7 @@
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import { translatePageLabel } from '@/composables/usePaginationLabel';
 
 interface Order {
     id: number;
@@ -55,7 +56,7 @@ function filterByStatus(s: string) {
     <AppLayout>
         <Head title="Заказы" />
 
-        <div class="p-6">
+        <div class="px-3 py-6 sm:px-6">
             <h1 class="mb-6 text-2xl font-bold text-gray-800">Заказы</h1>
 
             <!-- Status filter tabs -->
@@ -77,11 +78,11 @@ function filterByStatus(s: string) {
                         <tr>
                             <th class="px-4 py-3 text-left">#</th>
                             <th class="px-4 py-3 text-left">Клиент</th>
-                            <th class="px-4 py-3 text-left">Телефон</th>
-                            <th class="px-4 py-3 text-left">Сумма</th>
-                            <th class="px-4 py-3 text-left">Оплата</th>
+                            <th class="hidden sm:table-cell px-4 py-3 text-left">Телефон</th>
+                            <th class="hidden sm:table-cell px-4 py-3 text-left">Сумма</th>
+                            <th class="hidden sm:table-cell px-4 py-3 text-left">Оплата</th>
                             <th class="px-4 py-3 text-left">Статус</th>
-                            <th class="px-4 py-3 text-left">Дата</th>
+                            <th class="hidden sm:table-cell px-4 py-3 text-left">Дата</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y">
@@ -92,9 +93,9 @@ function filterByStatus(s: string) {
                                 </Link>
                             </td>
                             <td class="px-4 py-3 font-medium text-gray-800">{{ order.customer_name }}</td>
-                            <td class="px-4 py-3 text-gray-500">{{ order.customer_phone }}</td>
-                            <td class="px-4 py-3 font-semibold">{{ Number(order.total_amount).toLocaleString() }} сом</td>
-                            <td class="px-4 py-3">
+                            <td class="hidden sm:table-cell px-4 py-3 text-gray-500">{{ order.customer_phone }}</td>
+                            <td class="hidden sm:table-cell px-4 py-3 font-semibold">{{ Number(order.total_amount).toLocaleString() }} сом</td>
+                            <td class="hidden sm:table-cell px-4 py-3">
                                 <span
                                     class="rounded-full px-2.5 py-1 text-xs font-medium"
                                     :class="order.paid ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'"
@@ -107,7 +108,7 @@ function filterByStatus(s: string) {
                                     {{ statusLabel[order.status] }}
                                 </span>
                             </td>
-                            <td class="px-4 py-3 text-gray-400">{{ new Date(order.created_at).toLocaleDateString('ru') }}</td>
+                            <td class="hidden sm:table-cell px-4 py-3 text-gray-400">{{ new Date(order.created_at).toLocaleDateString('ru') }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -121,9 +122,9 @@ function filterByStatus(s: string) {
                         :href="link.url"
                         class="rounded-lg border px-3 py-1.5 text-sm"
                         :class="link.active ? 'bg-pink-500 text-white border-pink-500' : 'text-gray-600 hover:bg-gray-50'"
-                        v-html="link.label"
+                        v-html="translatePageLabel(link.label)"
                     />
-                    <span v-else class="rounded-lg border px-3 py-1.5 text-sm text-gray-300" v-html="link.label" />
+                    <span v-else class="rounded-lg border px-3 py-1.5 text-sm text-gray-300" v-html="translatePageLabel(link.label)" />
                 </template>
             </div>
         </div>

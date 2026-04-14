@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import { ArrowLeft } from 'lucide-vue-next';
 
 interface OrderItem {
     id: number;
@@ -59,9 +60,9 @@ function togglePaid() {
     <AppLayout>
         <Head :title="`Заказ #${order.id}`" />
 
-        <div class="p-6">
+        <div class="px-3 py-6 sm:px-6">
             <div class="mb-6 flex items-center gap-4">
-                <Link :href="route('admin.orders.index')" class="text-sm text-gray-400 hover:text-pink-500">← Назад</Link>
+                <Link :href="route('admin.orders.index')" class="text-gray-400 hover:text-pink-500"><ArrowLeft class="h-6 w-6" /></Link>
                 <h1 class="text-2xl font-bold text-gray-800">Заказ #{{ order.id }}</h1>
                 <span class="rounded-full px-3 py-1 text-sm font-medium" :class="statusClass[order.status]">
                     {{ statusLabel[order.status] }}
@@ -103,14 +104,6 @@ function togglePaid() {
                         <p class="text-sm font-medium text-gray-800">{{ order.customer_name }}</p>
                         <p class="text-sm text-gray-500">{{ order.customer_phone }}</p>
                         <p class="mt-2 text-sm text-gray-500">{{ order.shipping_address }}</p>
-                        <div class="mt-3">
-                            <span
-                                class="rounded-full px-2.5 py-1 text-xs font-medium"
-                                :class="order.paid ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-500'"
-                            >
-                                {{ order.paid ? 'Оплачен' : 'Не оплачен' }}
-                            </span>
-                        </div>
                     </div>
 
                     <!-- Paid toggle -->

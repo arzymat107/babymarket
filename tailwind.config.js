@@ -20,6 +20,18 @@ export default {
                 sm: 'calc(var(--radius) - 4px)',
             },
             colors: {
+                pink: {
+                    50:  '#f0faf9',
+                    100: '#d9f2ef',
+                    200: '#b2e4de',
+                    300: '#7ecfc6',
+                    400: '#4db8ad',
+                    500: '#2e9d93',
+                    600: '#237d75',
+                    700: '#1e6560',
+                    800: '#1b514e',
+                    900: '#194441',
+                },
                 background: 'hsl(var(--background))',
                 foreground: 'hsl(var(--foreground))',
                 card: {

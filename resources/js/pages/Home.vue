@@ -55,18 +55,18 @@ const { add } = useCart();
                     v-for="category in categories"
                     :key="category.id"
                     :href="route('catalog', { category_id: category.id })"
-                    class="group flex flex-col items-center rounded-xl bg-white p-4 shadow-sm transition hover:shadow-md hover:-translate-y-1"
+                    class="group flex flex-col overflow-hidden rounded-xl bg-white shadow-sm transition hover:shadow-md hover:-translate-y-1"
                 >
-                    <div class="mb-3 flex h-16 w-16 items-center justify-center rounded-full bg-pink-50">
+                    <div class="aspect-square w-full overflow-hidden bg-pink-50 flex items-center justify-center text-5xl">
                         <img
                             v-if="category.image_url"
                             :src="category.image_url"
                             :alt="category.name"
-                            class="h-10 w-10 object-contain"
+                            class="h-full w-full object-cover"
                         />
-                        <span v-else class="text-3xl">🍼</span>
+                        <span v-else>🍼</span>
                     </div>
-                    <span class="text-center text-sm font-medium text-gray-700 group-hover:text-pink-500">
+                    <span class="p-2 text-center text-sm font-medium text-gray-700 group-hover:text-pink-500">
                         {{ category.name }}
                     </span>
                 </Link>

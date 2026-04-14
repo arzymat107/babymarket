@@ -42,10 +42,10 @@ const statusClass: Record<string, string> = {
 
 <template>
     <AppLayout>
-        <Head title="Admin Dashboard" />
+        <Head title="Главная" />
 
-        <div class="p-6">
-            <h1 class="mb-6 text-2xl font-bold text-gray-800">Dashboard</h1>
+        <div class="px-3 py-6 sm:px-6">
+            <h1 class="mb-6 text-2xl font-bold text-gray-800">Главная</h1>
 
             <!-- Stats -->
             <div class="mb-8 grid grid-cols-2 gap-4 md:grid-cols-4">
@@ -99,8 +99,8 @@ const statusClass: Record<string, string> = {
                             <tr>
                                 <th class="px-6 py-3 text-left">#</th>
                                 <th class="px-6 py-3 text-left">Клиент</th>
-                                <th class="px-6 py-3 text-left">Телефон</th>
-                                <th class="px-6 py-3 text-left">Сумма</th>
+                                <th class="hidden sm:table-cell px-6 py-3 text-left">Телефон</th>
+                                <th class="hidden sm:table-cell px-6 py-3 text-left">Сумма</th>
                                 <th class="px-6 py-3 text-left">Статус</th>
                             </tr>
                         </thead>
@@ -112,8 +112,8 @@ const statusClass: Record<string, string> = {
                                     </Link>
                                 </td>
                                 <td class="px-6 py-3">{{ order.customer_name }}</td>
-                                <td class="px-6 py-3">{{ order.customer_phone }}</td>
-                                <td class="px-6 py-3 font-medium">{{ Number(order.total_amount).toLocaleString() }} сом</td>
+                                <td class="hidden sm:table-cell px-6 py-3">{{ order.customer_phone }}</td>
+                                <td class="hidden sm:table-cell px-6 py-3 font-medium">{{ Number(order.total_amount).toLocaleString() }} сом</td>
                                 <td class="px-6 py-3">
                                     <span class="rounded-full px-2.5 py-1 text-xs font-medium" :class="statusClass[order.status]">
                                         {{ statusLabel[order.status] }}
