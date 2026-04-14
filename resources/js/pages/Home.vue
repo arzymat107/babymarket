@@ -32,8 +32,12 @@ const { add } = useCart();
         <Head title="BabyMarket — всё для малышей" />
 
         <!-- Hero -->
-        <section class="bg-gradient-to-br from-pink-50 to-purple-50 py-16">
-            <div class="mx-auto max-w-7xl px-4 text-center">
+        <section
+            class="relative py-16 bg-cover bg-center bg-no-repeat"
+            style="background-image: url('/promo-background.jpg')"
+        >
+            <div class="absolute inset-0 bg-white/60"></div>
+            <div class="relative mx-auto max-w-7xl px-4 text-center">
                 <h1 class="text-4xl font-bold text-gray-800 md:text-5xl">
                     Всё для вашего <span class="text-pink-500">малыша</span>
                 </h1>

@@ -49,8 +49,8 @@ function addToCart() {
                 <Link :href="route('catalog', { category_id: product.category.id })" class="hover:text-pink-500">
                     {{ product.category.name }}
                 </Link>
-                <span>/</span>
-                <span class="text-gray-600">{{ product.name }}</span>
+                <span class="hidden sm:inline">/</span>
+                <span class="hidden sm:inline text-gray-600">{{ product.name }}</span>
             </nav>
 
             <!-- Product -->

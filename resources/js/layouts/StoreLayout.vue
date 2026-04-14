@@ -29,8 +29,8 @@ const navLinks = [
             <div class="mx-auto max-w-7xl px-4">
                 <div class="flex h-14 items-center justify-between md:h-16">
                     <!-- Logo -->
-                    <Link :href="route('home')" class="text-xl font-bold text-pink-500 md:text-2xl">
-                        BabyMarket
+                    <Link :href="route('home')">
+                        <img src="/logo.png" alt="BabyMarket" class="h-10 w-auto md:h-12" />
                     </Link>
 
                     <!-- Desktop nav -->
